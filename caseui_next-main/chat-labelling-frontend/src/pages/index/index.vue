@@ -457,8 +457,23 @@ export default {
       console.log('Searching for ' + states)
       let url = 'http://localhost:9191?query=' + encodeURIComponent(states.join(' '))
       axios.get(
-        url
+        url, { timeout: 30000 }
       ).then((json) => {
+        if (json.data.key === 'error') {
+          this.$Notice.warning({
+            title: 'Warning',
+            desc: 'The query is too broad, please choose a more accurate query'
+          })
+          let emptyData = {
+            Answer: [],
+            Suggest: [],
+            Filters: [],
+            Aspects: []
+          }
+          this.searchResultsBackup = emptyData
+          callback(emptyData)
+          return
+        }
         this.$http.post('/api/saveSearchResults', {
           query: states.join(' '),
           conversationId: this.conversationId,

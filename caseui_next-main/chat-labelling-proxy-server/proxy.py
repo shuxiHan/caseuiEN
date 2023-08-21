@@ -6,6 +6,7 @@ from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi.responses import JSONResponse
 import hashlib
+import time
 
 
 def generate_md5_hash(input_string):
@@ -96,6 +97,7 @@ async def login(name, password, role, action):
 
 @app.get("/")
 async def search(query='ipod', refinements=''):
+    first = time.time()
     url = RAINFOREST_URL.format(query=query, filters=refinements)
     res = requests.get(url)
     print(f'-- Searching for {query}')
@@ -103,6 +105,7 @@ async def search(query='ipod', refinements=''):
 
     if res.ok:
         data = res.json()
+        print(data)
         search = {
             'Suggest': [],
             'Answer': [],
@@ -111,7 +114,10 @@ async def search(query='ipod', refinements=''):
         }
         # print(data)
         search_results = data['search_results']
-        refinements = data['refinements']
+        refinements = data.get('refinements')
+
+        if len(search_results) == 0:
+            return {'key': 'error'}
         print(f'-- Found {len(search_results)} results.')
 
         for i, item in enumerate(search_results):
@@ -143,16 +149,27 @@ async def search(query='ipod', refinements=''):
             for ref in refinements[ref_category]:
                 display_name = ref["refinement_display_name"]
 
+                if 'value' in ref:
+                    value = ref['value']
+                    if not value.startswith('n:'):
+                        modified_value = value
+                    else:
+                        modified_value = value.split('||')[1]
+                else:
+                    modified_value = None
+
                 search['Filters'].append({
                     'name': f'{display_name}: {ref["name"]}',
-                    'value': ref['value'] if not ref['value'].startswith('n:') else ref['value'].split('||')[1]
+                    'value': modified_value
                 })
 
                 if display_name not in search['Aspects']:
                     search['Aspects'].append(display_name)
-
+        second = time.time()
+        print(f"用时共计{second - first}")
         return JSONResponse(content=search)
-
+    second = time.time()
+    print(f"用时共计{second - first}")
     return ''
 
 

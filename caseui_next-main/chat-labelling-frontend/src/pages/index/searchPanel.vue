@@ -20,13 +20,16 @@
     </div>
     <div v-show="!showFrame">
       <Spin size="large" v-if="loading" fix>
+        <div :style="{ fontSize: fontSize }">Please search first</div>
+      </Spin>
+      <Spin size="large" v-if="searching">
         <Icon type="ios-loading" size="50" class="spin-icon-load"></Icon>
         <div>Searching results...</div>
       </Spin>
       <CheckboxGroup v-model="selected" @on-change="onCheckGroupChange">
         <Collapse simple v-model="collapse">
           <Panel v-for="(actions,name) in data" v-if="name==='Answer'" :key="name">
-            <strong>{{name}}</strong>
+            <strong>Search results for items</strong>
             <div slot="content">
               <List item-layout="vertical" size="small">
                 <ListItem v-for="(item,index) in actions" :key="name+'-'+index">
@@ -77,7 +80,7 @@ const arrayEquals = (arr1, arr2) => {
   return difference.length === 0 ? 'orderChange' : false
 }
 export default {
-  props: ['value', 'activeActions', 'loading', 'data', 'searchResultConfig'],
+  props: ['value', 'activeActions', 'loading', 'data', 'searchResultConfig', 'searching'],
   model: {
     prop: 'value',
     event: 'change'
@@ -121,7 +124,8 @@ export default {
       active: '',
       pageLink: '',
       showFrame: false,
-      frameLoading: false
+      frameLoading: false,
+      fontSize: '44px'
     }
   },
   methods: {

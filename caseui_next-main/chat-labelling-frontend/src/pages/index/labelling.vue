@@ -1,7 +1,7 @@
 <template>
   <div style="overflow:auto;padding:10px 30px" :style="{height}">
     <Drawer
-      title="Please select related items"
+      title="Please select recommended items"
       closable
       v-model="drawer"
       :mask-closable="false"
@@ -17,6 +17,7 @@
         :activeActions="formItem.action"
         :data="searchResults"
         :searchResultConfig="searchResultConfig"
+        :searching="searching"
         @on-change="selectedResultChanged"
         @on-order-change="selectedResultOrderChanged"
         @changeBackupForParent="sendChangeBackup"
@@ -221,6 +222,7 @@ export default {
       fdrawer: false,
       sendLog: true,
       searchPanelLoading: false,
+      searching: false,
       searchResults: {},
       actionBackup: [], // 上一次sys action改变后的值
       submitting: false, // 为了避免在发送数据时，用户进行别的操作
@@ -239,9 +241,9 @@ export default {
     },
     reset () {
       this.sendLog = false // 重置界面期间数据的改变不发log
-      if (this.formItem.sendAnother === true) {
-        this.donotsearch = 3
-      }
+      // if (this.formItem.sendAnother === true) {
+      //   this.donotsearch = 3
+      // }
       this.formItem = {
         selectedSearch: [],
         state: [],
@@ -251,6 +253,7 @@ export default {
       }
       this.drawer = false
       this.searchPanelLoading = false
+      this.searching = false
       this.searchResults = {}
       this.actionBackup = []
       this.sendLog = true
@@ -306,15 +309,17 @@ export default {
     stateChanged (states, force) {
       console.log('state change')
       console.log(this.donotsearch)
-      if (this.donotsearch > 0) {
-        this.donotsearch -= 1
-        return
-      }
+      // if (this.donotsearch > 0) {
+      //   this.donotsearch -= 1
+      //   return
+      // }
       if ((this.submitting || this.sendDisabled || this.donotsearch) && !force) return
       this.searchPanelLoading = true
+      this.searching = true
       this.searchResults = {}
       this.searchData(states || [], (data) => {
         this.searchPanelLoading = false
+        this.searching = false
         this.searchResults = {...data}
       })
       // 清空action和selectedSearch

@@ -20,10 +20,9 @@
     </div>
     <div v-show="!showFrame">
       <Spin size="large" v-if="loading" fix>
-        <Icon type="ios-loading" size="50" class="spin-icon-load"></Icon>
-        <div>Updating filters...</div>
+        <div :style="{ fontSize: fontSize }">Please search first</div>
       </Spin>
-<!--      <Button @click="searchDataWithFilters">Search with filters</Button>-->
+      <Button @click="searchDataWithFilters">Search with filters</Button>
       <ul style="list-style-type: none" v-for="(actions,name) in data" v-if="name==='Filters'" :key="name">
         <li v-for="item in actions" :key="item.value">
           <input type="checkbox" :id="item.id" :value="item.value" v-model="selectedFilters">
@@ -94,7 +93,8 @@ export default {
       pageLink: '',
       showFrame: false,
       frameLoading: false,
-      selectedFilters: []
+      selectedFilters: [],
+      fontSize: '44px'
     }
   },
   methods: {
