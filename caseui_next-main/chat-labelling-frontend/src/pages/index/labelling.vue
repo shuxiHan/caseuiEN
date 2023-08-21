@@ -41,6 +41,7 @@
         :activeActions="formItem.action"
         :data="searchResults"
         :searchResultConfig="searchResultConfig"
+        :searching="searching"
         @on-filters-change="selectedFiltersChanged"
         ref="filtersPanel"
       ></filtersPanel>
@@ -60,6 +61,7 @@
           @on-change="stateChanged"
           @states-backup="statesBackup"
           @show-drawer="drawer = true"
+          @searchingstate="searchingstate"
         />
         <div class="vertical-spacing"></div> <!-- 垂直间距 -->
         <Button @click="fdrawer=!fdrawer">Show filters</Button>
@@ -230,6 +232,10 @@ export default {
     }
   },
   methods: {
+    searchingstate () {
+      this.searching = true
+      this.searchPanelLoading = false
+    },
     searchDataWithFilters () {
       // Call the searchDataWithFilters method in the filtersPanel component
       this.drawer = true
@@ -252,7 +258,7 @@ export default {
         sendAnother: false
       }
       this.drawer = false
-      this.searchPanelLoading = false
+      this.searchPanelLoading = true
       this.searching = false
       this.searchResults = {}
       this.actionBackup = []
@@ -314,12 +320,14 @@ export default {
       //   return
       // }
       if ((this.submitting || this.sendDisabled || this.donotsearch) && !force) return
-      this.searchPanelLoading = true
-      this.searching = true
+      // this.searchPanelLoading = true
+      // this.searching = true
       this.searchResults = {}
       this.searchData(states || [], (data) => {
-        this.searchPanelLoading = false
-        this.searching = false
+        if (data != null) {
+          this.searchPanelLoading = false
+          this.searching = false
+        }
         this.searchResults = {...data}
       })
       // 清空action和selectedSearch

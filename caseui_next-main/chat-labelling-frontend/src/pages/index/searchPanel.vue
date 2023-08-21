@@ -23,7 +23,7 @@
         <div :style="{ fontSize: fontSize }">Please search first</div>
       </Spin>
       <Spin size="large" v-if="searching">
-        <Icon type="ios-loading" size="50" class="spin-icon-load"></Icon>
+        <Icon type="ios-loading" size="200" class="spin-icon-load"></Icon>
         <div>Searching results...</div>
       </Spin>
       <CheckboxGroup v-model="selected" @on-change="onCheckGroupChange">

@@ -23,6 +23,10 @@
         <div :style="{ fontSize: fontSize }">Please search first</div>
       </Spin>
       <Button @click="searchDataWithFilters">Search with filters</Button>
+      <Spin size="large" v-if="searching">
+        <Icon type="ios-loading" size="200" class="spin-icon-load"></Icon>
+        <div>Searching results...</div>
+      </Spin>
       <ul style="list-style-type: none" v-for="(actions,name) in data" v-if="name==='Filters'" :key="name">
         <li v-for="item in actions" :key="item.value">
           <input type="checkbox" :id="item.id" :value="item.value" v-model="selectedFilters">
@@ -42,7 +46,7 @@ const arrayEaquals = (arr1, arr2) => {
   return difference.length === 0 ? 'orderChange' : false
 }
 export default {
-  props: ['value', 'activeActions', 'loading', 'data', 'searchResultConfig'],
+  props: ['value', 'activeActions', 'loading', 'data', 'searchResultConfig', 'searching'],
   model: {
     prop: 'value',
     event: 'change'
@@ -94,10 +98,23 @@ export default {
       showFrame: false,
       frameLoading: false,
       selectedFilters: [],
-      fontSize: '44px'
+      fontSize: '44px',
+      oldCheckedData: []
     }
   },
   methods: {
+    arraysAreEqual (arr1, arr2) {
+      if (arr1.length !== arr2.length) {
+        return false
+      }
+
+      for (let i = 0; i < arr1.length; i++) {
+        if (arr1[i] !== arr2[i]) {
+          return false
+        }
+      }
+      return true
+    },
     searchDataWithFilters () {
       let checkedData = []
       for (let i = 0; i < this.selectedFilters.length; i++) {
@@ -107,8 +124,23 @@ export default {
         }
       }
       // debugger
-      console.log(checkedData)
-      this.$emit('on-filters-change', checkedData)
+      if (this.arraysAreEqual(this.oldCheckedData, checkedData)) {
+        this.$Notice.warning({
+          title: 'Warning',
+          desc: 'Please change the filters before searching'
+        })
+      } else {
+        console.log(checkedData)
+        // 使用 slice() 方法创建浅拷贝
+        this.oldCheckedData = checkedData.slice()
+        // 或者使用扩展运算符创建浅拷贝
+        this.oldCheckedData = [...checkedData]
+        this.$Notice.info({
+          title: 'Searching',
+          desc: 'Searching, please wait'
+        })
+        this.$emit('on-filters-change', checkedData)
+      }
     },
     bindLoadEvent () {
       const iframe = this.$refs.frame
