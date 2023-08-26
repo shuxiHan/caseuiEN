@@ -30,7 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-RAINFOREST_URL = f'https://api.rainforestapi.com/request?api_key=864FB118FC5146F49F1F882E5A668EA9&' \
+RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=EAA9E3993A814E559B794348ED109C36&' \
                  'type=search&amazon_domain=amazon.com&search_term={query}&refinements={filters}'
 
 
@@ -150,14 +150,17 @@ async def search(query='ipod', refinements=''):
                 display_name = ref["refinement_display_name"]
 
                 if 'value' in ref:
+
                     value = ref['value']
                     if not value.startswith('n:'):
                         modified_value = value
                     else:
                         modified_value = value.split('||')[1]
                 else:
-                    modified_value = None
-
+                    modified_value = "None"
+                if(modified_value=="undefined"):
+                    continue
+                print(modified_value,"\n")
                 search['Filters'].append({
                     'name': f'{display_name}: {ref["name"]}',
                     'value': modified_value
@@ -167,6 +170,7 @@ async def search(query='ipod', refinements=''):
                     search['Aspects'].append(display_name)
         second = time.time()
         print(f"用时共计{second - first}")
+        print(search)
         return JSONResponse(content=search)
     second = time.time()
     print(f"用时共计{second - first}")

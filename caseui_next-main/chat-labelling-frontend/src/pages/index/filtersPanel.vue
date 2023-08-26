@@ -33,6 +33,7 @@
           <label :for="item.id">{{item.name}}</label>
         </li>
       </ul>
+      <Button @click="showdata">show</Button>
     </div>
   </div>
 </template>
@@ -103,6 +104,9 @@ export default {
     }
   },
   methods: {
+    showdata () {
+      console.log(this.data)
+    },
     arraysAreEqual (arr1, arr2) {
       if (arr1.length !== arr2.length) {
         return false
