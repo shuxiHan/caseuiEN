@@ -9,6 +9,7 @@
         multiple
         :disabled="disabled"
         ref="select"
+        placeholder="Please input a query to search related results."
       >
         <Option disabled value="0">Please enter your state option if nothing is appropriate.</Option>
         <Option v-for="item in currentOptions" :value="item" :key="item">{{ item }}</Option>
@@ -100,7 +101,7 @@ export default {
 .select-container {
   flex: 1;
   margin-right: 10px;
-  max-width: 300px; /* 根据需要调整宽度 */
+  max-width: 350px; /* 根据需要调整宽度 */
 }
 
 .button-container {

@@ -1,7 +1,7 @@
 <template>
   <div style="overflow:auto;padding:10px 30px" :style="{height}">
     <Drawer
-      title="Please select recommended items"
+      title="Please select recommended products or suggested aspects"
       closable
       v-model="drawer"
       :mask-closable="false"
@@ -235,6 +235,7 @@ export default {
     searchingstate () {
       this.searching = true
       this.searchPanelLoading = false
+      this.$refs.filtersPanel.resetselectedFilter()
     },
     searchDataWithFilters () {
       // Call the searchDataWithFilters method in the filtersPanel component

@@ -29,7 +29,7 @@
       <CheckboxGroup v-model="selected" @on-change="onCheckGroupChange">
         <Collapse simple v-model="collapse">
           <Panel v-for="(actions,name) in data" v-if="name==='Answer'" :key="name">
-            <strong>Search results for items</strong>
+            <strong>Search results for products</strong>
             <div slot="content">
               <List item-layout="vertical" size="small">
                 <ListItem v-for="(item,index) in actions" :key="name+'-'+index">
@@ -54,7 +54,7 @@
             </div>
           </Panel>
           <Panel v-for="(actions,name) in data" v-if="name==='Aspects'" :key="name">
-            <strong>{{name}}</strong>
+            <strong>Suggested aspects</strong>
             <div slot="content">
               <List item-layout="vertical" size="small">
                 <ListItem v-for="action in actions" :key="action">

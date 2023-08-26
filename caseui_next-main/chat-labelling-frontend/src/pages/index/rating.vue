@@ -1,7 +1,7 @@
 <template>
   <div style="width:800px; margin: 100px auto">
     <h1  v-if="role === 'cus'" style="text-align:center">Product Relevance Check</h1>
-    <h1  v-if="role === 'sys'" style="text-align:center">Rate this Conversation</h1>
+    <h1  v-if="role === 'sys'" style="text-align:center">Rate This Conversation</h1>
     <Divider />
     <!-- 显示搜索结果的部分 -->
 <!--    <Button type="primary" @click="fetchSearchedMessage">显示</Button>-->
@@ -12,16 +12,23 @@
     <div v-for="(item, index) in recommend_info" :key="index">
       <h3>{{ item.name }}</h3>
       <RadioGroup v-model="selectedOptions[index]">
-        <Radio :label="1">Related</Radio>
-        <Radio :label="0">Not Related</Radio>
+        <Radio :label="1">Relevant</Radio>
+        <Radio :label="0">Irrelevant</Radio>
       </RadioGroup>
       <br><br>
     </div>
-    <h3>have you obtained your target item successfully？</h3>
-    <RadioGroup v-model="cus_rate.anotheranswer">
-      <Radio label="yes">Yes</Radio>
-      <Radio label="no">No</Radio>
-    </RadioGroup>
+    <div v-if="role === 'cus'">
+      <h1 style="text-align:center">Rate This Conversation</h1>
+      <h3>Have you obtained your target products successfully?</h3>
+      <RadioGroup v-model="cus_rate.anotheranswer">
+        <Radio label="yes">Yes</Radio>
+        <Radio label="no">No</Radio>
+      </RadioGroup>
+      <br><br>
+      <h3 slot="label">What do you think of your partner's performance?</h3>
+      <Rate allow-half v-model="cus_rate.rate" />
+      <br><br>
+    </div>
     <!--    <button @click="saveResults">Save Results</button>-->
     <Form :model="formItem" ref="form" label-position="top" :rules="rules" :show-message="false">
 <!--      <FormItem prop="goalAchieve" v-if="role==='cus'">-->
@@ -76,7 +83,8 @@ export default {
     return {
       extractedTextList: [],
       cus_rate: {
-        anotheranswer: null
+        anotheranswer: null,
+        rate: 0
       },
       searchedMessage: null,
       // recommend_info: [],

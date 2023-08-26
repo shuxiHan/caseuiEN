@@ -3,94 +3,38 @@
     {
       "title": "Reveal",
       "name": "Reveal",
-      "tooltip": "Start a new search conversation."
+      "tooltip": "Start a new conversation by revealing your intent."
     },
     {
       "title": "Revise",
       "name": "Revise",
-      "tooltip": "Make a correction."
-    },
-    {
-      "title": "Shift",
-      "name": "Shift",
-      "tooltip": "Start a new search conversation by accepting recommendations."
+      "tooltip": "Make a correction about your intent."
     },
     {
       "title": "Interpret",
       "name": "Interpret",
-      "tooltip": "Refine the current question proactively or by answering a clarifying question."
+      "tooltip": "Answer a clarifying question or respond to product recommendations from the system."
     },
     {
-      "title": "Feedback",
-      "name": "Feedback",
-      "tooltip": "Reveal satisfaction to system responses.",
-      "children": [
-        {
-          "title": "Perfect",
-          "name": "Perfect"
-        },
-        {
-          "title": "Good",
-          "name": "Good"
-        },
-        {
-          "title": "Fair",
-          "name": "Fair"
-        },
-        {
-          "title": "Bad",
-          "name": "Bad"
-        }
-      ]
-    },
-    {
-      "title": "Request",
-      "name": "Request",
-      "tooltip": "Request system to give expected answer types.",
-      "children": [
-        {
-          "title": "Summary",
-          "name": "Summary"
-        },
-        {
-          "title": "Link",
-          "name": "Link"
-        },
-        {
-          "title": "Factoid",
-          "name": "Factoid"
-        },
-   {
-          "title": "Recommendation",
-          "name": "Recommendation"
-        }
-      ]
+      "title": "Inquire",
+      "name": "Inquire",
+      "tooltip": "Inquire about the response from the system."
     },
     {
       "title": "Chitchat",
       "name": "Chitchat",
       "tooltip": "Greeting, etc."
-    },
-    {
-      "title": "Not-clear",
-      "name": "Not-clear",
-      "tooltip": "Cannot understand system response."
     }
   ],
   "system": [
     {
       "title": "Clarify",
       "name": "Clarify",
-      "tooltip": "Choose some suggested queries and ask users a clarifying question.",
+      "tooltip": "Choose some suggested aspects and ask the user a clarifying question.",
       "children": [
         {
-          "title": "Yes",
-          "name": "Yes",
-          "allowEmptySearch": true
-        },
-        {
-          "title": "No",
-          "name": "No",
+          "title": "Yes-No",
+          "name": "Yes-No",
           "allowEmptySearch": true
         },
         {
@@ -114,38 +58,18 @@
     {
       "title": "Recommend",
       "name": "Recommend",
-      "tooltip": "Choose some related queries based on which to recommend related topics.",
-      "children": [
-        {
-          "title": "Summary",
-          "name": "Summary"
-        },
-        {
-          "title": "Link",
-          "name": "Link"
-        },
-        {
-          "title": "Factoid",
-          "name": "Factoid"
-        }
-      ]
+      "tooltip": "Recommend some products to the user."
     },
     {
-      "title": "Request",
-      "name": "Request",
-      "tooltip": "Can understand user response and request users to reformulate questions.",
+      "title": "Inquire",
+      "name": "Inquire",
+      "tooltip": "Inquire about the response from the user.",
       "allowEmptySearch": true
     },
     {
       "title": "Chitchat",
       "name": "Chitchat",
       "tooltip": "Greeting, etc.",
-      "allowEmptySearch": true
-    },
-    {
-      "title": "Not-clear",
-      "name": "Not-clear",
-      "tooltip": "Cannot understand system response.",
       "allowEmptySearch": true
     }
   ]

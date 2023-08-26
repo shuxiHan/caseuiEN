@@ -103,6 +103,9 @@ export default {
     }
   },
   methods: {
+    resetselectedFilter () {
+      this.oldCheckedData = []
+    },
     arraysAreEqual (arr1, arr2) {
       if (arr1.length !== arr2.length) {
         return false

@@ -80,7 +80,7 @@ public class ChatService {
         if (maxBackgroundTurn == null) {
             maxBackgroundTurn = new SystemStatus();
             maxBackgroundTurn.setAttrName("MaxBackgroundTurn");
-            maxBackgroundTurn.setAttrValue("1");
+            maxBackgroundTurn.setAttrValue("1000000");
             systemStatusDAO.save(maxBackgroundTurn);
         }
 
