@@ -5,7 +5,7 @@
 const path = require('path')
 const cookieMap = {};
 const port=8081
-const host='localhost'
+const host='0.0.0.0'
 module.exports = {
   dev: {
     // Paths

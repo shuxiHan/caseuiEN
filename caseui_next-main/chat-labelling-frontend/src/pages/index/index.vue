@@ -420,7 +420,7 @@ export default {
       }
       // debugger
       let that = this
-      let url = 'http://localhost:9191?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
+      let url = 'http://20.2.232.141:9191?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -465,7 +465,7 @@ export default {
         return
       }
       console.log('Searching for ' + states)
-      let url = 'http://localhost:9191?query=' + encodeURIComponent(states.join(' '))
+      let url = 'http://20.2.232.141:9191?query=' + encodeURIComponent(states.join(' '))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
