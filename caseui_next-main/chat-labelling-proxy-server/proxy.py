@@ -73,8 +73,8 @@ async def login(name, password, role, action):
                           "VALUES (%s, %s, %s, %s, %s)"
                     cursor.execute(sql, (new_id, 0, name, password, role))
                 connection.commit()
-
-            return {'result': 'Success'}
+            print(role)
+            return {'result': 'Success', "role":role}
         elif action == "login":
             with connection:
                 with connection.cursor() as cursor:
@@ -85,7 +85,7 @@ async def login(name, password, role, action):
 
                     # if user exists, check if password and role match the form data
                     if result and result["password"] == password:
-                        return {"result": "Success"}
+                        return {"result": "Success", "role":result["role"]}
                     else:
                         return JSONResponse(status_code=401, content={"message": "Authorization failed"})
         else:

@@ -39,6 +39,7 @@
 </template>
 <script>
 import axios from 'axios'
+
 export default {
   components: {
     axios
@@ -95,6 +96,7 @@ export default {
               title: 'Success!',
               desc: action === 'login' ? 'User logged in.' : 'User created.'
             })
+            this.formInline.role = json.data.role
             this.submitting = true
             this.$http.post('/checkLogin',
               'username=' + this.formInline.user + '&password=' + this.formInline.password,
@@ -102,7 +104,19 @@ export default {
             ).then((response) => {
               if (response.data.code === 200) {
                 // window.location = response.data.profile ? '/index?_uuid=' + response.data.uuid + '&_user=' + this.formInline.user : '/profile?_uuid=' + response.data.uuid + '&_user=' + this.formInline.user
-                window.location = '/index?_uuid=' + response.data.uuid + '&_user=' + this.formInline.user
+                // window.location = '/index?_uuid=' + response.data.uuid + '&_user=' + this.formInline.user
+                const data = {
+                  uuid: response.data.uuid,
+                  user: this.formInline.user
+                }
+                console.log(response.data)
+                const queryParams = new URLSearchParams(data).toString()
+                console.log(this.formInline.role)
+                if (this.formInline.role === 'sys') {
+                  window.location = `/Instructions_user.html?${queryParams}`
+                } else if (this.formInline.role === 'cus') {
+                  window.location = `/Instructions_cus.html?${queryParams}`
+                }
               } else {
                 this.$Message.error({
                   content: response.data.msg,
