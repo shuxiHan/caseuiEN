@@ -158,14 +158,9 @@ async def search(query='ipod', refinements=''):
                         modified_value = value.split('||')[1]
                 else:
                     modified_value = "None"
-<<<<<<< HEAD
                 if modified_value == "undefined":
                     continue
-=======
-                if(modified_value=="undefined"):
-                    continue
                 print(modified_value,"\n")
->>>>>>> 2fbbfe6a02189dfc14e9bf3c76adb0b29f2d2a1e
                 search['Filters'].append({
                     'name': f'{display_name}: {ref["name"]}',
                     'value': modified_value
