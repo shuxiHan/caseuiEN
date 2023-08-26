@@ -33,6 +33,7 @@
           <label :for="item.id">{{item.name}}</label>
         </li>
       </ul>
+      <Button @click="showdata">show</Button>
     </div>
   </div>
 </template>
@@ -103,8 +104,13 @@ export default {
     }
   },
   methods: {
+<<<<<<< HEAD
     resetselectedFilter () {
       this.oldCheckedData = []
+=======
+    showdata () {
+      console.log(this.data)
+>>>>>>> 2fbbfe6a02189dfc14e9bf3c76adb0b29f2d2a1e
     },
     arraysAreEqual (arr1, arr2) {
       if (arr1.length !== arr2.length) {

@@ -150,6 +150,7 @@ async def search(query='ipod', refinements=''):
                 display_name = ref["refinement_display_name"]
 
                 if 'value' in ref:
+
                     value = ref['value']
                     if not value.startswith('n:'):
                         modified_value = value
@@ -157,8 +158,14 @@ async def search(query='ipod', refinements=''):
                         modified_value = value.split('||')[1]
                 else:
                     modified_value = "None"
+<<<<<<< HEAD
                 if modified_value == "undefined":
                     continue
+=======
+                if(modified_value=="undefined"):
+                    continue
+                print(modified_value,"\n")
+>>>>>>> 2fbbfe6a02189dfc14e9bf3c76adb0b29f2d2a1e
                 search['Filters'].append({
                     'name': f'{display_name}: {ref["name"]}',
                     'value': modified_value
@@ -168,6 +175,7 @@ async def search(query='ipod', refinements=''):
                     search['Aspects'].append(display_name)
         second = time.time()
         print(f"用时共计{second - first}")
+        print(search)
         return JSONResponse(content=search)
     second = time.time()
     print(f"用时共计{second - first}")

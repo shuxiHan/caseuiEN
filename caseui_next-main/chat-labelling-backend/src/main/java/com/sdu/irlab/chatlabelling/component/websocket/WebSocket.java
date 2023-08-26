@@ -115,11 +115,19 @@ public class WebSocket {
         String newPartner = null;
 
         if (client == null) return;
+<<<<<<< HEAD
        if (!hasBackground && waitingPartner == null) {
            //没有background且不能恢复之前的对话
            sendMessageList(Arrays.asList(createMessage(MessageCommand.ERROR, MessageType.ERROR, "", "", "No more task right now! The system is closed!")), user, -1);
            return;
        }
+=======
+        if (!hasBackground && waitingPartner == null) {
+            //没有background且不能恢复之前的对话
+            sendMessageList(Arrays.asList(createMessage(MessageCommand.ERROR, MessageType.ERROR, "", "", "No more task right now! The system is closed!")), user, -1);
+            return;
+        }
+>>>>>>> 2fbbfe6a02189dfc14e9bf3c76adb0b29f2d2a1e
 
         String partner = null;//partner是对话的另一方，恢复的还是创建的都可以
         if (waitingPartner != null) {
