@@ -419,8 +419,15 @@ export default {
       let that = this
       let url = 'http://localhost:9191?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
       axios.get(
-        url
+        url, { timeout: 30000 }
       ).then((json) => {
+        if (json.data.ref === 'error') {
+          this.$Notice.warning({
+            title: 'Warning',
+            desc: 'There are too many restrictions, please reselect'
+          })
+          return
+        }
         // debugger
         this.$http.post('/api/saveSearchResults', {
           query: this.statesBackupList.join(' '),
