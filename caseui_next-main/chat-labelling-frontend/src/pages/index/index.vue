@@ -413,7 +413,8 @@ export default {
     },
     loadCurrentState () {
       return this.$http.get('/api/loadCurrentState').then((response) => {
-        this.currentState = response.data
+        // this.currentState = response.data
+        this.currentState = ''
       })
     },
     saveStatesBackup (newStates) {
