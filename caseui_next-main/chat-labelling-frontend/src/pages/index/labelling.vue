@@ -248,9 +248,9 @@ export default {
     },
     reset () {
       this.sendLog = false // 重置界面期间数据的改变不发log
-      // if (this.formItem.sendAnother === true) {
-      //   this.donotsearch = 3
-      // }
+      if (this.formItem.sendAnother === true) {
+        this.donotsearch = 3
+      }
       this.formItem = {
         selectedSearch: [],
         state: [],
@@ -316,10 +316,10 @@ export default {
     stateChanged (states, force) {
       console.log('state change')
       console.log(this.donotsearch)
-      // if (this.donotsearch > 0) {
-      //   this.donotsearch -= 1
-      //   return
-      // }
+      if (this.donotsearch > 0) {
+        this.donotsearch -= 1
+        return
+      }
       if ((this.submitting || this.sendDisabled || this.donotsearch) && !force) return
       // this.searchPanelLoading = true
       // this.searching = true
