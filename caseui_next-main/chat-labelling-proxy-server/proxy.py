@@ -125,10 +125,11 @@ async def search(query='ipod', refinements=''):
             # print("\n")
             title = item['title']
             search['Suggest'].append({
-                'id': generate_md5_hash(title),
+                'id': generate_md5_hash(title),  # 本项目中产品唯一id
                 'title': title,
                 'link': item['link'],
                 'image': item['image'],
+                'productId': item['asin'],  # 后序可能有用，亚马逊产品唯一id
                 # 'is_prime': item['is_prime'],
                 # 'rating': item['rating'],
                 # 'ratings_total': item['ratings_total'],
@@ -178,4 +179,4 @@ async def search(query='ipod', refinements=''):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=9191)
+    uvicorn.run(app, host="localhost", port=9191)

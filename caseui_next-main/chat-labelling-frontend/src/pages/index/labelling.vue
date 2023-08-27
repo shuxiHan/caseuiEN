@@ -187,7 +187,7 @@ export default {
       },
       rules: {
         state: [{
-          required: true,
+          required: false,
           validator: (rule, value, callback) => {
             if (this.formItem.action && !calAllow(this.actions.system, this.formItem.action, 0) && (!value || value.length === 0)) {
               return callback(new Error('Please select state!'))

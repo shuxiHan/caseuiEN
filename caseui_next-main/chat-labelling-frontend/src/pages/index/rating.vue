@@ -1,6 +1,6 @@
 <template>
   <div style="width:800px; margin: 100px auto">
-    <h1  v-if="role === 'cus'" style="text-align:center">Product Relevance Check</h1>
+    <h1 v-if="role === 'cus' && recommend_info.length !== 0" style="text-align: center">Product Relevance Check</h1>
     <h1  v-if="role === 'sys'" style="text-align:center">Rate This Conversation</h1>
     <Divider />
     <!-- 显示搜索结果的部分 -->

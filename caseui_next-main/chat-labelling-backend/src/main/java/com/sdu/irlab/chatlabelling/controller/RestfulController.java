@@ -181,7 +181,7 @@ public class RestfulController {
         for (Message each_message : messages) {
             String action = each_message.getAction();
             System.out.println(action);
-            if (action.equals("[\"Recommend\",\"Factoid\"]") || action.equals("[\"Recommend\",\"Summary\"]") || action.equals("[\"Recommend\",\"Link\"]")) {
+            if (action.equals("[\"Recommend\"]") || action.equals("[\"Recommend\",\"Factoid\"]") || action.equals("[\"Recommend\",\"Summary\"]") || action.equals("[\"Recommend\",\"Link\"]")) {
                 content += each_message.getContent();
             }
         }
