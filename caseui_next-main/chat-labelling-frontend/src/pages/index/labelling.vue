@@ -58,6 +58,7 @@
         <createSelect
           v-model="formItem.state"
           :canCreate="canCreateState"
+          @resetdonotsearch="resetdonotsearch"
           @on-change="stateChanged"
           @states-backup="statesBackup"
           @show-drawer="drawer = true"
@@ -157,7 +158,9 @@ export default {
       type: Object
     },
     showOptionsToUser: false,
-    selectedRecommendations: []
+    selectedRecommendations: [],
+    searching: false,
+    searchPanelLoading: false
   },
   created () {
     this.bus.$on('loadMore', (data) => {
@@ -223,8 +226,8 @@ export default {
       drawer: false,
       fdrawer: false,
       sendLog: true,
-      searchPanelLoading: false,
-      searching: false,
+      // searchPanelLoading: false,
+      // searching: false,
       searchResults: {},
       actionBackup: [], // 上一次sys action改变后的值
       submitting: false, // 为了避免在发送数据时，用户进行别的操作
@@ -232,9 +235,13 @@ export default {
     }
   },
   methods: {
+    resetdonotsearch () {
+      console.log('hhhhhhhhh')
+      this.donotsearch = 0
+    },
     searchingstate () {
-      this.searching = true
-      this.searchPanelLoading = false
+      // this.searching = true
+      // this.searchPanelLoading = false
       this.$refs.filtersPanel.resetselectedFilter()
     },
     searchDataWithFilters () {
@@ -248,9 +255,7 @@ export default {
     },
     reset () {
       this.sendLog = false // 重置界面期间数据的改变不发log
-      if (this.formItem.sendAnother === true) {
-        this.donotsearch = 3
-      }
+      this.donotsearch = 10000
       this.formItem = {
         selectedSearch: [],
         state: [],

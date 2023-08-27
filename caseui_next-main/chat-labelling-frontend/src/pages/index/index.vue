@@ -61,6 +61,8 @@
               :conversationId="conversationId"
               :finish="finish"
               :searchResultConfig="searchResultConfig"
+              :searching="searching"
+              :searchPanelLoading="searchPanelLoading"
               @on-filters="searchWithFilters"
               @states-backup="saveStatesBackup"
               @changeBackupForParent="saveChangeBackup"
@@ -101,6 +103,8 @@ export default {
   },
   data () {
     return {
+      searching: false,
+      searchPanelLoading: false,
       recommend_info: [],
       height: window.screen.availHeight - 230,
       loading: false,
@@ -123,8 +127,8 @@ export default {
       bus: new Vue(),
       searchResultsBackup: {},
       selectedResultsBackup: [],
-      instructions_cus: 'To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the system. The conversation is initiated by you. You need to select an \'intent\' first, and then write a message in the \'response\' to send to the system (by clicking the \'submit\' botton). When selecting an \'intent\', you can see the explanation for each \'intent\' by hovering your mouse over the \'?\' icon beside the \'intent\'. To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. After sending your messages, please wait for the system to reply or recommend products to you. After you receive the system\'s message, you can repeat step 1 to continue the conversation.<br>4. After you think you are done for the conversation, you can click \'finish the conversation\' to finish the conversation. <br>5. After you click \'finish the conversation\', you will need to <strong>evaluate the relevance of the products</strong> recommended by the system in the conversations. So please make sure you are aware of the relevance of the recommended products with your target product.',
-      instructions_sys: 'To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the user. Please waiting for the user to send the first message. After you get the message from the user, you need to select an \'action\' first. When selecting an \'action\', you can see the explanation for each \'action\' by hovering your mouse over the \'?\' icon beside the \'action\'. You then write a message in the \'response\' (by clicking the \'submit\' botton). To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. For each round of conversation, you can input a query to search for related results for products. You can also click \'show filters\' to see filters and search for better products based on the filters when necessary. Note that the search engine may be a bit slow, please be patient after you submit your query and wait for the results.<br>4. When you think that there are products meeting the user\'s need, you can select \'recommend\' in the \'action\' and select corresponding products from the search result panel (by checking the checkbox right next to the search results of products) to recommend to the user. Write a text message to respond in the \'response\' textbox (e.g., what about the following choices?) and your selection of recommended products will be added automatically after your text message to send to the user. <br>5. When you think you need more information about the user\'s need, you can select \'clarify\' in the \'action\', select corresponding \'aspects\' from the result panel (by checking the checkbox right next to the \'aspects\'), and ask a clarifying question in the \'response\' textbox about the \'aspects\' (e.g., what operating system do you prefer? \'operating system\' is the aspect you want to ask).<br>6. After the user is done for the conversation and clicks \'finish the conversation\' button, you will need to answer a few questionnaires to evaluate the conversation.'
+      instructions_cus: 'Thank you for agreeing to take part of this study, where you will be acting as a normal user role to have a chat. The chat is about seeking for products (normal user role) or recommending products (system role) to buy. P.S. We value your privacy. As such, we will not report identifiable information on any of the manuscripts and other public materials that will result from this study.<br>To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the system. The conversation is initiated by you. You need to select an \'intent\' first, and then write a message in the \'response\' to send to the system (by clicking the \'submit\' botton). When selecting an \'intent\', you can see the explanation for each \'intent\' by hovering your mouse over the \'?\' icon beside the \'intent\'. To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. After sending your messages, please wait for the system to reply or recommend products to you. After you receive the system\'s message, you can repeat step 1 to continue the conversation.<br>4. After you think you are done for the conversation, you can click \'finish the conversation\' to finish the conversation. <br>5. After you click \'finish the conversation\', you will need to <strong>evaluate the relevance of the products</strong> recommended by the system in the conversations. So please make sure you are aware of the relevance of the recommended products with your target product.',
+      instructions_sys: 'Thank you for agreeing to take part of this study, where you will be acting as a normal system role to have a chat. The chat is about seeking for products (normal user role) or recommending products (system role) to buy. P.S. We value your privacy. As such, we will not report identifiable information on any of the manuscripts and other public materials that will result from this study.<br>To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the user. Please waiting for the user to send the first message. After you get the message from the user, you need to select an \'action\' first. When selecting an \'action\', you can see the explanation for each \'action\' by hovering your mouse over the \'?\' icon beside the \'action\'. You then write a message in the \'response\' (by clicking the \'submit\' botton). To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. For each round of conversation, you can input a query to search for related results for products. You can also click \'show filters\' to see filters and search for better products based on the filters when necessary. Note that the search engine may be a bit slow, please be patient after you submit your query and wait for the results.<br>4. When you think that there are products meeting the user\'s need, you can select \'recommend\' in the \'action\' and select corresponding products from the search result panel (by checking the checkbox right next to the search results of products) to recommend to the user. Write a text message to respond in the \'response\' textbox (e.g., what about the following choices?) and your selection of recommended products will be added automatically after your text message to send to the user. <br>5. When you think you need more information about the user\'s need, you can select \'clarify\' in the \'action\', select corresponding \'aspects\' from the result panel (by checking the checkbox right next to the \'aspects\'), and ask a clarifying question in the \'response\' textbox about the \'aspects\' (e.g., what operating system do you prefer? \'operating system\' is the aspect you want to ask).<br>6. After the user is done for the conversation and clicks \'finish the conversation\' button, you will need to answer a few questionnaires to evaluate the conversation.'
     }
   },
   methods: {
@@ -452,7 +456,7 @@ export default {
         console.log(error)
         this.$Notice.error({
           title: 'Error',
-          desc: 'Please check your proxy application!'
+          desc: 'Please refresh the page or change the query to search again!'
         })
         let emptyData = {
           Answer: [],
@@ -469,6 +473,12 @@ export default {
         return
       }
       console.log('Searching for ' + states)
+      this.$Notice.info({
+        title: 'Searching',
+        desc: 'Searching, please wait'
+      })
+      this.searching = true
+      this.searchPanelLoading = false
       let url = 'http://localhost:9191?query=' + encodeURIComponent(states.join(' '))
       axios.get(
         url, { timeout: 30000 }

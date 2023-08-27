@@ -82,6 +82,7 @@ export default {
       this.currentOptions.push(value)
     },
     changed () {
+      this.$emit('resetdonotsearch')
       this.$emit('searchingstate')
       this.$emit('change', this.selected)
       this.$emit('states-backup', this.selected)
