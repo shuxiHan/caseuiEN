@@ -30,7 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=EAA9E3993A814E559B794348ED109C36&' \
+RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=B93E074872054DC18B470CE20EBA68C3&' \
                  'type=search&amazon_domain=amazon.com&search_term={query}&refinements={filters}'
 
 
@@ -142,7 +142,8 @@ async def search(query='ipod', refinements=''):
                 'from': 'rainforest',
                 'id': f'answer-{i}',
                 'content': 'empty',
-                'image': item['image']
+                'image': item['image'],
+                'selected': 'false'
             })
 
         for ref_category in refinements.keys():

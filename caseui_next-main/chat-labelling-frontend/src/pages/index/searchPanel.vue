@@ -33,9 +33,9 @@
             <div slot="content">
               <List item-layout="vertical" size="small">
                 <ListItem v-for="(item,index) in actions" :key="name+'-'+index">
-                  <Checkbox :label="name+'-'+index" :disabled="active.indexOf(name)<0">
-                      <img :src=item.image alt="" height="50px" width="50px">
-                      <span style="color:black">{{item.title}}</span>
+                  <Checkbox :label="name+'-'+index" :disabled="(disable ===true && item.selected === 'false') || (active.indexOf(name) < 0)" :value="item.selected" @input="toggleSelected(item)">
+                  <img :src=item.image alt="" height="50px" width="50px">
+                  <span style="color:black">{{item.title}}</span>
                   </Checkbox>
                   <a v-if="item.link" target="_blank" :href="item.link">Show page</a>
                   <Divider type="vertical" />
@@ -96,6 +96,13 @@ export default {
     this.bindLoadEvent()
   },
   watch: {
+    selected (newVal, oldVal) {
+      if (newVal.length >= this.maxSelection) {
+        this.disable = true
+      } else {
+        this.disable = false
+      }
+    },
     value (newVal, oldVal) {
       let equals = arrayEquals(newVal.map(v => v.itemId), oldVal.map(v => v.itemId))
       if (equals === true) return
@@ -125,10 +132,23 @@ export default {
       pageLink: '',
       showFrame: false,
       frameLoading: false,
-      fontSize: '44px'
+      fontSize: '44px',
+      maxSelection: 7,
+      disable: false
     }
   },
   methods: {
+    toggleSelected (item) {
+      console.log('item:')
+      console.log(item.id)
+      for (let i = 0; i < this.data['Answer'].length; i++) {
+        console.log(this.data['Answer'][i])
+        if (item.id === this.data['Answer'][i].id) {
+          this.data['Answer'][i].selected = this.data['Answer'][i].selected === 'false' ? 'true' : 'false'
+        }
+      }
+      console.log(this.data)
+    },
     showWebPage (link) {
       this.frameLoading = true
       this.showFrame = true

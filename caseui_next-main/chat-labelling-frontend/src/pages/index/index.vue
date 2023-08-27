@@ -424,7 +424,7 @@ export default {
       }
       // debugger
       let that = this
-      let url = 'http://20.2.232.141:9191?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
+      let url = 'http://localhost:9191?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -469,7 +469,7 @@ export default {
         return
       }
       console.log('Searching for ' + states)
-      let url = 'http://20.2.232.141:9191?query=' + encodeURIComponent(states.join(' '))
+      let url = 'http://localhost:9191?query=' + encodeURIComponent(states.join(' '))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -504,7 +504,7 @@ export default {
         console.log(error)
         this.$Notice.error({
           title: 'Error',
-          desc: 'Please check your proxy application!'
+          desc: 'Please refresh the page or change the query to search again!'
         })
         let emptyData = {
           Answer: [],
