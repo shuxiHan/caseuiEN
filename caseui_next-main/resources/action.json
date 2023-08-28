@@ -52,13 +52,13 @@
     {
       "title": "No answer",
       "name": "No answer",
-      "tooltip": "Cannot find related answer.",
+      "tooltip": "Cannot find related products to meet user's need.",
       "allowEmptySearch": true
     },
     {
       "title": "Recommend",
       "name": "Recommend",
-      "tooltip": "Recommend some products to the user."
+      "tooltip": "Recommend some products to the user. Only select this one when you want to recommend some products from search results."
     },
     {
       "title": "Inquire",

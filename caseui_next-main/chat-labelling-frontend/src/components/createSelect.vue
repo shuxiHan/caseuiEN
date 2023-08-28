@@ -39,10 +39,13 @@ export default {
       let flag = true
       if (this.canCreate && query && this.selected.indexOf(query) < 0) {
         // 添加已选之前，先检查是否可以添加
-        let {canCreate, message} = this.canCreate(query)
+        let {canCreate} = this.canCreate(query)
         flag = canCreate
         if (!flag && !hideMessage) {
-          this.$Notice.warning({content: message})
+          this.$Notice.warning({
+            title: 'Warning',
+            desc: 'Query too long, please re-enter'
+          })
         }
       }
       if (flag) { originFuntion() }

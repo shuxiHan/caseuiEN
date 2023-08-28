@@ -1,6 +1,9 @@
 <template>
   <div style="width:800px; margin: 100px auto">
     <h1 v-if="role === 'cus' && recommend_info.length !== 0" style="text-align: center">Product Relevance Check</h1>
+    <p v-if="role === 'cus' && recommend_info.length !== 0" style="text-align: center; font-size: 14px; margin-bottom: 20px;">
+      Please evaluate whether the products recommended by the system are what you want (i.e., relevant).
+    </p>
     <h1  v-if="role === 'sys'" style="text-align:center">Rate This Conversation</h1>
     <Divider />
     <!-- 显示搜索结果的部分 -->
