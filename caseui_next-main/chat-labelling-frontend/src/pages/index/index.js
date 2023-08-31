@@ -10,6 +10,12 @@ import VueNativeSock from 'vue-native-websocket'
 import VueClipboard from 'vue-clipboard2'
 import VueJsonp from 'vue-jsonp'
 
+// 在全局监听 beforeunload 事件
+window.addEventListener('beforeunload', function (event) {
+  event.preventDefault()
+  event.returnValue = '您可能有未保存的更改，确定要离开吗？'
+})
+
 utils.initAxios(axios, ViewUI, Vue)
 Vue.use(VueClipboard)
 Vue.use(VueJsonp)
