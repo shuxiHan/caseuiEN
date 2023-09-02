@@ -30,7 +30,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=B93E074872054DC18B470CE20EBA68C3&' \
+RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=A6BB488F5501417A80664B413A7C08E8&' \
                  'type=search&amazon_domain=amazon.com&search_term={query}&refinements={filters}'
 
 

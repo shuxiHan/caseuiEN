@@ -444,6 +444,7 @@ export default {
         // debugger
         this.$http.post('/api/saveSearchResults', {
           query: this.statesBackupList.join(' '),
+          filter: newFilters.join(' '),
           conversationId: this.conversationId,
           data: json.data
         })
@@ -502,6 +503,7 @@ export default {
         }
         this.$http.post('/api/saveSearchResults', {
           query: states.join(' '),
+          filter: '',
           conversationId: this.conversationId,
           data: json.data
         })

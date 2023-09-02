@@ -8,6 +8,7 @@ import javax.persistence.ManyToOne;
 @Entity
 public class SearchLog extends BaseEntity {
     private String query;
+    private String filter;
     @Lob
     private String content;
     @ManyToOne(cascade = {CascadeType.MERGE, CascadeType.REFRESH}, optional = false)
@@ -20,6 +21,14 @@ public class SearchLog extends BaseEntity {
 
     public String getContent() {
         return content;
+    }
+
+    public String getFilter() {
+        return filter;
+    }
+
+    public void setFilter(String filter) {
+        this.filter = filter;
     }
 
     public void setContent(String content) {

@@ -328,11 +328,12 @@ public class ChatService {
         return operationLog;
     }
 
-    public SearchLog createSearchLog(String user, String query, String content, String conversationId) {
+    public SearchLog createSearchLog(String user, String query, String filter, String content, String conversationId) {
         Conversation conversation = conversationDAO.getOne(Long.parseLong(conversationId));
         SearchLog searchLog = new SearchLog();
         searchLog.setContent(content);
         searchLog.setQuery(query);
+        searchLog.setFilter(filter);
         searchLog.setUser(userDAO.findByName(user));
         searchLog.setConversation(conversation);
         searchLogDAO.save(searchLog);

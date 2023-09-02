@@ -220,7 +220,7 @@ public class RestfulController {
     public void saveSearchResults(@RequestBody String req, @RequestParam(value = "_user") String user) {
         try {
             JsonNode node = objectMapper.readTree(req);
-            chatService.createSearchLog(user, node.get("query").asText(), node.get("data").toString(), node.get("conversationId").asText());
+            chatService.createSearchLog(user, node.get("query").asText(), node.get("filter").asText(), node.get("data").toString(), node.get("conversationId").asText());
         } catch (JsonProcessingException e) {
             e.printStackTrace();
         }
