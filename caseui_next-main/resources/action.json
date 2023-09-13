@@ -1,24 +1,24 @@
 {
   "user": [
     {
-      "title": "Reveal",
+      "title": "Reveal intent",
       "name": "Reveal",
       "tooltip": "Start a new conversation by revealing your intent."
     },
     {
-      "title": "Revise",
+      "title": "Revise intent",
       "name": "Revise",
       "tooltip": "Make a correction about your intent."
     },
     {
-      "title": "Interpret",
+      "title": "Feedback/Interpret",
       "name": "Interpret",
       "tooltip": "Answer a clarifying question or respond to product recommendations from the system."
     },
     {
-      "title": "Inquire",
+      "title": "Request-rephrase",
       "name": "Inquire",
-      "tooltip": "Inquire about the response from the system."
+      "tooltip": "Did not understand system responses, inquire details about the response from the system."
     },
     {
       "title": "Chitchat",
@@ -28,26 +28,15 @@
   ],
   "system": [
     {
-      "title": "Clarify",
+      "title": "Ask Clarifying questions",
       "name": "Clarify",
       "tooltip": "Choose some suggested aspects and ask the user a clarifying question.",
-      "children": [
-        {
-          "title": "Yes-No",
-          "name": "Yes-No",
-          "allowEmptySearch": true
-        },
-        {
-          "title": "Choice",
-          "name": "Choice",
-          "allowEmptySearch": true
-        },
-        {
-          "title": "Open",
-          "name": "Open",
-          "allowEmptySearch": true
-        }
-      ]
+      "allowEmptySearch": true
+    },
+    {
+      "title": "Recommend products",
+      "name": "Recommend",
+      "tooltip": "Recommend some products to the user."
     },
     {
       "title": "No answer",
@@ -56,14 +45,9 @@
       "allowEmptySearch": true
     },
     {
-      "title": "Recommend",
-      "name": "Recommend",
-      "tooltip": "Recommend some products to the user. Only select this one when you want to recommend some products from search results."
-    },
-    {
-      "title": "Inquire",
+      "title": "Request-rephrase",
       "name": "Inquire",
-      "tooltip": "Inquire about the response from the user.",
+      "tooltip": "Did not understand user responses, inquire details about the response from the user.",
       "allowEmptySearch": true
     },
     {
