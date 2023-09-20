@@ -20,7 +20,8 @@ origins = [
     "http://localhost",
     "http://localhost:8081",
     "http://0.0.0.0:8081",
-    "http://8.130.29.207:8081",
+    "http://8.218.97.40:8081",
+    "http://8.218.97.40:8085"
 ]
 
 app.add_middleware(
@@ -30,7 +31,7 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
-RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=A6BB488F5501417A80664B413A7C08E8&' \
+RAINFOREST_URL = f'https://api.asindataapi.com/request?api_key=E4795D40954146F99F6E82C4D0A1E8C7&' \
                  'type=search&amazon_domain=amazon.com&search_term={query}&refinements={filters}'
 
 
@@ -41,7 +42,7 @@ async def login(name, password, role, action):
         port=3306,
         user="root",
         password="password",
-        database='chat_labelling',
+        database='chat_labelling_en',
         cursorclass=pymysql.cursors.DictCursor
     )
 
@@ -180,4 +181,4 @@ async def search(query='ipod', refinements=''):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="localhost", port=9191)
+    uvicorn.run(app, host="0.0.0.0", port=9195)

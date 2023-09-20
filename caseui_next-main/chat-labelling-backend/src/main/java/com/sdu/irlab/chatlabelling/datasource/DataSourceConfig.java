@@ -27,7 +27,7 @@ public class DataSourceConfig {
     private String port;
 
     private String driverClassName = "com.mysql.cj.jdbc.Driver";
-    private String databaseName = "chat_labelling";
+    private String databaseName = "chat_labelling_en";
     private String timezone = "GMT%2B8";
     private String datasourceUrl;
 

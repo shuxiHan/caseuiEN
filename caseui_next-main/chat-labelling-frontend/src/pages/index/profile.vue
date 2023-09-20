@@ -8,6 +8,8 @@
         <RadioGroup v-model="formItem.gender">
           <Radio label="male">Male</Radio>
           <Radio label="female">Female</Radio>
+          <Radio label="non-binary">Non-binary</Radio>
+          <Radio label="prefer not to say">Prefer not to say</Radio>
         </RadioGroup>
       </FormItem>
       <FormItem prop="age">

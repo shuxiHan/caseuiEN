@@ -4,7 +4,7 @@
 
 const path = require('path')
 const cookieMap = {};
-const port=8081
+const port=8085
 const host='0.0.0.0'
 module.exports = {
   dev: {
@@ -13,7 +13,7 @@ module.exports = {
     assetsPublicPath: '/',
     proxyTable: {
       '/checkLogin': {
-        target: 'http://localhost:9090',
+        target: 'http://localhost:9095',
         secure: false,
         changeOrigin:true,
         onProxyRes: function(proxyRes, req, res) {
@@ -31,7 +31,7 @@ module.exports = {
         },
       },
       '/api': {
-        target: 'http://localhost:9090',
+        target: 'http://localhost:9095',
         secure: false,
         changeOrigin:true,
         onProxyReq(proxyReq, req, res) {
@@ -40,7 +40,7 @@ module.exports = {
         }
       },
       '/websocket':{
-        target: 'ws://localhost:9090',
+        target: 'ws://localhost:9095',
         ws:true
       },
       '/test/**':{

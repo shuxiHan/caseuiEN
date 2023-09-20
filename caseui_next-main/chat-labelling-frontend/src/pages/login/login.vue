@@ -87,7 +87,7 @@ export default {
       // }
       this.$refs[name].validate((valid) => {
         if (valid) {
-          let usrURL = 'http://localhost:9191/login?name=' + this.formInline.user + '&password=' + this.formInline.password + '&role=' + this.formInline.role + '&action=' + action
+          let usrURL = 'http://8.218.97.40:9195/login?name=' + this.formInline.user + '&password=' + this.formInline.password + '&role=' + this.formInline.role + '&action=' + action
           axios.post(
             usrURL
           ).then((json) => {

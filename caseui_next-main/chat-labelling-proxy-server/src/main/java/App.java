@@ -14,7 +14,7 @@ public class App extends NanoHTTPD {
 
     public static void main(String[] args) {
         try {
-            new App(9191, args[0], args[0].equals("bing") ? args[1] : null, args[0].equals("bing") ? args[2] : null);
+            new App(9195, args[0], args[0].equals("bing") ? args[1] : null, args[0].equals("bing") ? args[2] : null);
         } catch (IOException ioe) {
             System.err.println("Couldn't start server:\n" + ioe);
         } catch (ArrayIndexOutOfBoundsException ioe) {
