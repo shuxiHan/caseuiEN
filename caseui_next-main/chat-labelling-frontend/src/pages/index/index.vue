@@ -67,6 +67,8 @@
               @on-filters="searchWithFilters"
               @states-backup="saveStatesBackup"
               @changeBackupForParent="saveChangeBackup"
+              @changeisrecommend="changeisrecommend"
+              @passselected="passselected"
               @getRecommendInfo="getRecommendInfo"
               :bus="bus"
             />
@@ -104,6 +106,9 @@ export default {
   },
   data () {
     return {
+      raw_info: [],
+      add_info: [],
+      dialogVisible: false,
       searching: false,
       searchPanelLoading: false,
       recommend_info: [],
@@ -128,11 +133,42 @@ export default {
       bus: new Vue(),
       searchResultsBackup: {},
       selectedResultsBackup: [],
+      isrecommend: false,
       instructions_cus: 'Thank you for agreeing to take part of this study, where you will be acting as a normal user role to have a chat. The chat is about seeking for products (normal user role) or recommending products (system role) to buy.<br>Please carefully watch the following operation introduction video:<a href="https://youtu.be/ghOi2Q5JqEI" target="_blank ">Instructions for normal users of chat-labelling platform (1min39s).</a>If the video is not clear, please adjust to the high-definition version on the video viewing page to watch.<br><br>To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the system. The conversation is initiated by you. You need to select an \'intent\' first, and then write a message in the \'response\' to send to the system (by clicking the \'submit\' botton). When selecting an \'intent\', you can see the explanation for each \'intent\' by hovering your mouse over the \'?\' icon beside the \'intent\'. To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. After sending your messages, please wait for the system to reply or recommend products to you. After you receive the system\'s message, you can repeat step 2 to continue the conversation.<br>4. After you think you are done for the conversation, you can click \'finish the conversation\' to finish the conversation. <br>5. After you click \'finish the conversation\', you will need to <strong>evaluate the relevance of the products</strong> recommended by the system in the conversations. So please make sure you are aware of the relevance of the recommended products with your target product.',
       instructions_sys: 'Thank you for agreeing to take part of this study, where you will be acting as a normal system role to have a chat. The chat is about seeking for products (normal user role) or recommending products (system role) to buy.<br>Please carefully watch the following operation introduction video:<a href="https://youtu.be/EbhRu8xReBY" target="_blank ">Instructions for system users of chat-labelling platform (1min39s).</a>If the video is not clear, please adjust to the high-definition version on the video viewing page to watch. <br><br>To complete the study, please follow the steps outlined below.<br>1. We would like to know some general information about you, so we will first ask you to complete a survey related to demographic data, i.e., gender, age, and majors.<br>2. You will then have a conversation with the user. Please waiting for the user to send the first message. After you get the message from the user, you need to select an \'action\' first. When selecting an \'action\', you can see the explanation for each \'action\' by hovering your mouse over the \'?\' icon beside the \'action\'. You then write a message in the \'response\' (by clicking the \'submit\' botton). To send multiple messages in one round, be sure to check \'send another message\' before sending a message.<br>3. For each round of conversation, you can input a query to search for related results for products. You can also click \'show filters\' to see filters and search for better products based on the filters when necessary. Note that the search engine may be a bit slow, please be patient after you submit your query and wait for the results.<br>4. When you think that there are products meeting the user\'s need, you can select \'Recommend products\' in the \'action\' and select corresponding products from the search result panel (by checking the checkbox right next to the search results of products) to recommend to the user. Write a text message to respond in the \'response\' textbox (e.g., what about the following choices?) and your selection of recommended products will be added automatically after your text message to send to the user. <br>5. When you think you need more information about the user\'s need, you can select \'Ask Clarifying questions\' in the \'action\', select corresponding \'aspects\' from the result panel (by checking the checkbox right next to the \'aspects\'), and ask a clarifying question in the \'response\' textbox about the \'aspects\' (e.g., what brand of cell phone do you like? "Brand" is the aspect you want to ask).<br>6. After the user is done for the conversation and clicks \'finish the conversation\' button, you will need to answer a few questionnaires to evaluate the conversation.'
     }
   },
   methods: {
+    changeisrecommend () {
+      this.isrecommend = true
+      // this.getRecommendInfo()
+      console.log(this.recommend_info)
+    },
+    passselected (selected) {
+      // this.raw_info = selected
+      console.log('ffffffffffffffffffffffffffffffffffffff')
+      console.log(selected)
+      this.raw_info = selected.map(item => item.title)
+      // for (let i = 0; i < selected.length; i++) {
+      //   console.log('item')
+      //   console.log(selected[i])
+      //   console.log(selected[i].title)
+      //   if (!this.add_row.includes(selected[i].title)) {
+      //     // 如果不在，将其添加到 this.add_row 中
+      //     this.add_row.push(selected[i].title)
+      //   }
+      // }
+      for (let i = 0; i < this.raw_info.length; i++) {
+        if (!this.add_info.includes(this.raw_info[i])) {
+          this.add_info.push(this.raw_info[i])
+        }
+      }
+      console.log('raw')
+      console.log(this.raw_info)
+      console.log('add')
+      console.log(this.add_info)
+      this.recommend_info = this.add_info
+    },
     async getRecommendInfo () {
       try {
         // 调用后端API来获取搜索结果消息
@@ -192,6 +228,22 @@ export default {
       // this.message = 'Loading actions'
       await this.loadAction()
       // this.message = 'Waiting for commands from server'
+      await this.loadRecommend() // 获取推荐信息
+    },
+    loadRecommend () {
+      if (this.role !== 'cus') { // 只有当角色为用户时才查询add_info
+        return
+      }
+      return this.$http.get('/api/loadRecommendInfo', {
+        params: {
+          conversationId: this.conversationId,
+          user: this.username
+        }
+      }).then((response) => {
+        this.add_info = response.data
+        this.recommend_info = this.add_info
+        console.log(this.recommend_info)
+      })
     },
     profileCompleted () {
       this.needProfile = false
@@ -271,6 +323,7 @@ export default {
           this.message = 'Loading history and Background'
           await this.loadHistoryAndBackground()
           this.loading = false
+          await this.loadRecommend() // 获取推荐信息
         }
         if (data.messageCommand === 'WAIT4PARTNER' && !this.finished) {
           this.message = 'Matching you with a chat partner'
@@ -279,6 +332,42 @@ export default {
           this.loading = true
         }
         if (data.messageCommand === 'SENDMESSAGE' && !this.finished) {
+          console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+          console.log(data)
+          console.log('hhhhhhhhhhhhhhhhhhhhhhhhhhhhhh')
+          console.log(dataList)
+          if (this.role === 'cus') {
+            this.raw_info = data.content.split('iuiuiuiuiuiui')
+            data.content = this.raw_info[0]
+            console.log(this.raw_info)
+            let tmp = this.raw_info[1].toString()
+            this.raw_info = tmp.split('|*&*|')
+            this.raw_info.pop()
+            console.log(this.raw_info)
+            for (let i = 0; i < this.raw_info.length; i++) {
+              let tmp2 = this.raw_info[i].split('imidimid')
+              let tmp3 = {name: tmp2[0], id: tmp2[1]}
+              if (!this.add_info.some(item => item.name === tmp3.name && item.id === tmp3.id)) {
+                this.add_info.push(tmp3)
+              }
+            }
+            console.log('raw')
+            console.log(this.raw_info)
+            console.log('add')
+            console.log(this.add_info)
+            this.recommend_info = this.add_info
+            this.$http.post('/api/saveRecommend', {
+              recommend_info: this.recommend_info,
+              username: this.username,
+              conversationId: this.conversationId
+            }).then((response) => {
+              // this.$emit('completed')
+            }).catch((e) => {
+              this.submitting = false
+              this.$Message.error('The product failed to save the database!')
+            })
+          }
+          console.log(this.recommend_info)
           if (data.content) {
             this.$refs.chatUI.addMessage({message: data.content, time: new Date()}, 'sys')
           }
@@ -429,7 +518,7 @@ export default {
       }
       // debugger
       let that = this
-      let url = 'http://8.218.97.40:9195?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
+      let url = 'http://localhost:9195?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -481,7 +570,7 @@ export default {
       })
       this.searching = true
       this.searchPanelLoading = false
-      let url = 'http://8.218.97.40:9195?query=' + encodeURIComponent(states.join(' '))
+      let url = 'http://localhost:9195?query=' + encodeURIComponent(states.join(' '))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -551,11 +640,24 @@ export default {
           msg += '<br>' // Add an empty line between results
         }
       }
+      let msg2 = msg
+      if (this.role === 'sys') {
+        msg += 'iuiuiuiuiuiui'
+        for (let i = 0; i < this.recommend_info.length; i++) {
+          msg += this.recommend_info[i]
+          const id = md5(name).toString()
+          msg += 'imidimid' + id
+          msg += '|*&*|'
+        }
+      }
       data.response = msg
+      if (this.role === 'sys') {
+        msg = msg2
+      }
       console.log('data:')
       console.log(data)
       this.websocketsend(data)
-      this.$refs.chatUI.addMessage({message: msg, time: new Date()}, 'user')
+      this.$refs.chatUI.addMessage({message: msg2, time: new Date()}, 'user')
       callback()
     },
     saveChangeBackup (checked) {

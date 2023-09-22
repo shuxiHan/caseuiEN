@@ -18,7 +18,7 @@ def generate_md5_hash(input_string):
 app = FastAPI()
 origins = [
     "http://localhost",
-    "http://localhost:8081",
+    "http://localhost:8085",
     "http://0.0.0.0:8081",
     "http://8.218.97.40:8081",
     "http://8.218.97.40:8085"
@@ -78,14 +78,16 @@ async def login(name, password, role, action):
             return {'result': 'Success', "role":role}
         elif action == "login":
             with connection:
+                print("connection success!")
                 with connection.cursor() as cursor:
                     # I guess... check if user exists? this is not real authentication
                     sql = "SELECT `password`, `role` FROM `user` WHERE `name`=%s"
                     cursor.execute(sql, (name,))
                     result = cursor.fetchone()
-
+                    print(result)
                     # if user exists, check if password and role match the form data
                     if result and result["password"] == password:
+                        print("密码正确")
                         return {"result": "Success", "role":result["role"]}
                     else:
                         return JSONResponse(status_code=401, content={"message": "Authorization failed"})
@@ -181,4 +183,4 @@ async def search(query='ipod', refinements=''):
 
 
 if __name__ == "__main__":
-    uvicorn.run(app, host="0.0.0.0", port=9195)
+    uvicorn.run(app, host="localhost", port=9195)

@@ -7,11 +7,13 @@ import com.sdu.irlab.chatlabelling.common.ConversationStatus;
 import com.sdu.irlab.chatlabelling.datasource.domain.Conversation;
 import com.sdu.irlab.chatlabelling.datasource.domain.Rate;
 import com.sdu.irlab.chatlabelling.datasource.domain.Message;
+import com.sdu.irlab.chatlabelling.datasource.domain.Recommend;
 import com.sdu.irlab.chatlabelling.datasource.domain.User;
 import com.sdu.irlab.chatlabelling.datasource.repository.ConversationDAO;
 import com.sdu.irlab.chatlabelling.datasource.repository.UserDAO;
 import com.sdu.irlab.chatlabelling.datasource.repository.RateDAO;
 import com.sdu.irlab.chatlabelling.datasource.repository.MessageDAO;
+import com.sdu.irlab.chatlabelling.datasource.repository.RecommendDAO;
 import com.sdu.irlab.chatlabelling.security.CustomSessionManagement;
 import com.sdu.irlab.chatlabelling.service.BaiduSearchService;
 import com.sdu.irlab.chatlabelling.service.BingSearchService;
@@ -26,10 +28,14 @@ import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.web.authentication.WebAuthenticationDetails;
 import org.springframework.security.web.context.HttpSessionSecurityContextRepository;
 import org.springframework.web.bind.annotation.*;
+import org.springframework.http.ResponseEntity;
 
 import javax.annotation.PostConstruct;
 import javax.servlet.http.HttpServletRequest;
 import java.util.*;
+
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 @RestController
 @RequestMapping("/api")
@@ -40,6 +46,7 @@ public class RestfulController {
     private UserDAO userDAO;
     private RateDAO rateDAO;
     private MessageDAO messageDAO;
+    private RecommendDAO recommendDAO;
 
     private ObjectMapper objectMapper = new ObjectMapper();
 
@@ -72,7 +79,72 @@ public class RestfulController {
 //                              @RequestParam(value = "user") String user) {
 //        return user;
 //    }
+    /**
+     * 这是初始化recommend_info的方法
+     */
+    @RequestMapping(value = "/loadRecommendInfo", method = RequestMethod.GET)
+    public ResponseEntity<List<Map<String, String>>> loadRecommendInfo(
+        @RequestParam("conversationId") Long conversationId,
+        @RequestParam("user") String username) {
 
+        Conversation conversation = conversationDAO.findById(conversationId).orElse(null);
+        User user = userDAO.findByName(username);
+
+        if (conversation == null || user == null) {
+            // 处理参数无效的情况，可以返回适当的响应
+            return ResponseEntity.badRequest().build();
+        }
+
+        List<Recommend> recommends = recommendDAO.findRecommendByConversationAndUserOrderByCreateTimeDesc(conversation, user);
+
+        List<Map<String, String>> resultList = new ArrayList<>();
+
+        for (Recommend recommend : recommends) {
+            String evaluationObject = recommend.getEvaluationObject();  // 产品名
+            String md5Value = recommend.getNameID();  // 产品md5编码
+
+            Map<String, String> recommendation = new HashMap<>();
+            recommendation.put("id", md5Value);
+            recommendation.put("name", evaluationObject);
+
+            resultList.add(recommendation);
+        }
+
+        return ResponseEntity.ok(resultList);
+    }
+
+
+    /*
+    * 这是保存recommend_info的方法，防止网络问题导致推荐产品丢失
+    */
+    // 保存用户评分
+    @RequestMapping(value = "/saveRecommend", method = RequestMethod.POST, headers = "Accept=application/json")
+    public void saveRecommend(@RequestBody Map<String, Object> requestData) throws JsonProcessingException {
+        System.out.println(requestData);
+        List<Map<String, Object>> recommendInfoList = (List<Map<String, Object>>) requestData.get("recommend_info");
+        String username = (String) requestData.get("username");
+        Long conversationId = Long.valueOf((Integer) requestData.get("conversationId"));
+
+        Conversation conversation = conversationDAO.getOne(conversationId);
+        User user = userDAO.findByName(username);
+
+        for (int i = 0; i < recommendInfoList.size(); i++) {
+            Map<String, Object> recommendInfo = recommendInfoList.get(i);
+            String evaluationObject = (String) recommendInfo.get("name");
+            String nameID = (String) recommendInfo.get("id");
+
+            Recommend recommend = new Recommend();
+            recommend.setUser(user);
+            recommend.setConversation(conversation);
+            recommend.setEvaluationObject(evaluationObject);
+            recommend.setNameID(nameID);
+
+            if (recommendDAO != null) {
+                recommendDAO.saveAndFlush(recommend);
+            }
+        }
+
+    }
 
     @RequestMapping(value = "/instructions", method = RequestMethod.GET)
     public String instructions() {
@@ -302,6 +374,11 @@ public class RestfulController {
     @Autowired
     public void setMessageDAO(MessageDAO messageDAO) {
         this.messageDAO = messageDAO;
+    }
+
+    @Autowired
+    public void setRecommendDAO(RecommendDAO recommendDAO) {
+        this.recommendDAO = recommendDAO;
     }
 
 }

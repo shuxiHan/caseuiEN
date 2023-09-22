@@ -267,6 +267,11 @@ public class ChatService {
         conversationDAO.save(conversation);
 
         Message message = new Message();
+        // 将content按照分隔符"iuiuiuiuiuiui"分割，保留第一部分
+        String[] contentParts = content.split("iuiuiuiuiuiui");
+        if (contentParts.length > 0) {
+            content = contentParts[0];
+        }
         message.setContent(content);
         message.setConversation(conversation);
         message.setReceiver(userDAO.findByName(to));

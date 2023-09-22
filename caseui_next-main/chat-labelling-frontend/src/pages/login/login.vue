@@ -87,7 +87,7 @@ export default {
       // }
       this.$refs[name].validate((valid) => {
         if (valid) {
-          let usrURL = 'http://8.218.97.40:9195/login?name=' + this.formInline.user + '&password=' + this.formInline.password + '&role=' + this.formInline.role + '&action=' + action
+          let usrURL = 'http://localhost:9195/login?name=' + this.formInline.user + '&password=' + this.formInline.password + '&role=' + this.formInline.role + '&action=' + action
           axios.post(
             usrURL
           ).then((json) => {
@@ -128,12 +128,12 @@ export default {
             }).catch((e) => {
               console.log(e)
               this.submitting = false
-              this.$Message.error('Something wrong when sending data!')
+              this.$Message.error('Something wrong when sending data in checking!')
             })
           }).catch((error) => {
             // debugger
             console.log(error)
-            this.$Message.error('Something wrong when sending data!')
+            this.$Message.error('Something wrong when sending datafffff!')
           })
         }
       })
