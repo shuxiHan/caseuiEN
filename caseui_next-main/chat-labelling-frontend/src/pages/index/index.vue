@@ -518,7 +518,7 @@ export default {
       }
       // debugger
       let that = this
-      let url = 'http://localhost:9195?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
+      let url = 'http://8.219.97.40:9195?query=' + encodeURIComponent(this.statesBackupList.join(' ')) + '&refinements=' + encodeURIComponent(newFilters.join(','))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
@@ -570,7 +570,7 @@ export default {
       })
       this.searching = true
       this.searchPanelLoading = false
-      let url = 'http://localhost:9195?query=' + encodeURIComponent(states.join(' '))
+      let url = 'http://8.218.97.40:9195?query=' + encodeURIComponent(states.join(' '))
       axios.get(
         url, { timeout: 30000 }
       ).then((json) => {
